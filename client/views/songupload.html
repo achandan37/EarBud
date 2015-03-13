@@ -1,0 +1,38 @@
+<!doctype html>
+<html ng-app="songsApp">
+<head>
+  <meta charset="utf-8">
+  <title>Add a Song</title>
+  <script type="text/javascript" src="js/angular.js"></script>
+  <script src="js/angular-route.min.js"></script>
+  <script type="text/javascript" src="js/angular-resource.js"></script>
+  <script type="text/javascript" src="/js/app.js"></script>
+  <script type="text/javascript" src="/js/controllers/upload-Controller.js"></script>
+  <script src="/js/jquery.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.css">
+  <script>
+  </script>
+
+  <style>
+  
+  </style>
+
+    
+</head>
+<body ng-controller="uploadController">
+  <div class="container">
+   <form id        =  "uploadForm"
+     enctype   =  "multipart/form-data"
+     action    =  "/api/songupload"
+     method    =  "post"
+>
+<input type="file" id="usersong" name="userSong" ng-model="songpath.song"/>
+<input type="submit" value="Upload Song" name="submit">
+</form>
+  
+
+</body>
+</html>
+

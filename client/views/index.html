@@ -1,0 +1,141 @@
+<!doctype html>
+<html ng-app="songsApp">
+<head>
+	<meta charset="utf-8">
+	<title>Akhil's Audio Player</title>
+	<script type="text/javascript" src="js/angular.js"></script>
+	
+	<script src="js/angular-route.min.js"></script>
+	<script type="text/javascript" src="js/angular-resource.js"></script>
+	<script type="text/javascript" src="/js/app.js"></script>
+	<script type="text/javascript" src="/js/controllers/songs-Controller.js"></script>
+	<script src="/js/jquery.js"></script>
+	<script src="/js/bootstrap.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.css">
+	<style>
+	.container-fluid{margin-top:20px; margin-left: 20px; }
+	.songnav{width:4.8%;}
+	.window{
+		border: 1px solid rgb(204, 204, 204); 
+		height:80px;
+		background-image: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%);
+		border-radius:6px;
+		margin-left: 1px;
+		
+		}
+		.vol{
+			padding-left: 2px;
+			padding-right: 2px;
+		}
+	.leftwindow{
+		padding:15px;
+		padding-left: 92px;
+		padding-right: 92px;
+		display: inline-block;
+		vertical-align: top;
+	}
+	.rightwindow{
+		position: relative;
+		top:-10px;
+		vertical-align: top;
+		height:45px;
+		display: block;
+		padding-left: 10px;
+	}
+
+	.centerwindow{display: inline-block;width:100px; text-align: center;}
+
+	#volumebar{
+		width:100px;
+		display: inline-block;
+	}
+	#seekbar{
+		width:690px;
+		height:40px;
+	}
+	.selected
+		{
+		background-image: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%);
+		border-radius:6px;
+		}
+	.notselected
+		{
+		background-color: white;
+		}
+	body{padding:10px;}
+	</style>
+
+	  
+</head>
+<body ng-controller="songsController">
+		<div class="row">
+			<div class="songnav col-md-1">
+				<button type="button" class="btn btn-default btn-lg" id="previous">
+					<span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+				</button>
+			</div>
+		  	<div class="songnav col-md-1">
+				<button type="button" class="btn btn-default btn-lg" id="stop">
+					<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+				</button>
+			</div>
+		  	<div class="songnav col-md-1">
+				<button type="button" class="btn btn-default btn-lg" id="play">
+					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+				</button>
+			</div>
+		  	<div class="songnav col-md-1">
+				<button type="button" class="btn btn-default btn-lg" id="pause">
+					<span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+				</button>
+			</div>
+		  	<div class="songnav col-md-1">
+				<button type="button" class="btn btn-default btn-lg" id="next">
+					<span class="glyphicon glyphicon-fast-forward" aria-hidden="true" ></span>
+				</button>
+			</div>
+		  	<div class="col-md-10"><div class="window">
+		  		<div class="leftwindow">
+		  			<span class="vol glyphicon glyphicon-volume-off" aria-hidden="true" ></span><input type="range" id="volumebar" min="0" max="100" value="50" ng-model="volumeChange" ng-click="changevol()">
+		  			<span class="vol glyphicon glyphicon-volume-up" aria-hidden="true" ></span>
+		  		</div>
+		  		<div class="centerwindow">
+			  		<span id="songname"></span><br>
+			  		<span id="artist"></span></div>
+				<div class="rightwindow">
+					<input type="range" id="seekbar" min="0" max="1000" value="0" ng-model="seekChange" ng-click="startAt()">
+		  		</div>
+			  	</div>
+		  		</div>
+		  		
+		  	<div class="col-md-1 col-md-offset-2"></div>
+		</div>
+	</div>
+			<table class="table">
+			    <thead>
+			        <tr>
+			          <th>Song #</th>
+			          <th>Name</th>
+			          <th>Artist</th>
+			          <th>Language</th>
+			          <th>Genre</th>
+			          <th>Mood</th>
+			        </tr>
+			    </thead>
+			    <tbody id="songdata">
+			    		<tr ng-repeat="song in songs" ng-init="i=songs.indexOf(song)+1" id="{{song.songname}}" ng-click="clicksong(i)">
+            				<td>{{i}}</td>
+				            <td >{{song.songname}}</td>
+				            <td>{{song.artist}}</td>
+				            <td>{{song.language}}</td>
+				            <td>{{song.genre}}</td>
+				            <td>{{song.mood}}</td>
+        				</tr >
+			    </tbody>
+
+			</table>
+	
+
+</body>
+</html>

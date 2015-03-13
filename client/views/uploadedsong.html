@@ -1,0 +1,187 @@
+<!doctype html>
+<html ng-app="songsApp">
+<head>
+  <meta charset="utf-8">
+  <title>Add a Song</title>
+  <script type="text/javascript" src="js/angular.js"></script>
+  <script src="js/angular-route.min.js"></script>
+  <script type="text/javascript" src="js/angular-resource.js"></script>
+  <script type="text/javascript" src="/js/app.js"></script>
+  <script type="text/javascript" src="/js/controllers/upload-Controller.js"></script>
+  <script src="/js/jquery.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.css">
+
+
+  <style>
+  </style>
+<script>
+	var start;
+	var arrayoftime = [];
+	
+	$(document).ready(function(){
+		var x = document.getElementById("play");
+		setInterval(function(){$("#CurrentMin").val(x.currentTime*1000)},100);
+		
+
+	})
+	$(document).keydown(function(e){
+		console.log(e);	
+		if(e.keyCode==190){
+			var x = document.getElementById("play");
+			if(x.paused){x.play();}
+			else{x.pause()};
+		}
+
+		if(e.keyCode==37){
+			var x = document.getElementById("play");
+			current=x.currentTime-0.5;
+			x.currentTime=current;
+		}
+
+		if(e.keyCode==39){
+			var x = document.getElementById("play");
+			current=x.currentTime+0.5;
+			x.currentTime=current;
+		}
+
+		if(e.keyCode==83){
+			var x = document.getElementById("play");
+			$("#startsong1").val(x.currentTime*1000)
+		}
+
+		if(e.keyCode==65)  {
+			var x = document.getElementById("play");
+			value=$("#startsong1").val();
+			x.currentTime=value/1000
+		}
+
+		if(e.keyCode==66){
+			var x = document.getElementById("play");
+			$("#beginoffset").val(x.currentTime*1000)
+		}
+
+		if(e.keyCode==86)  {
+			var x = document.getElementById("play");
+			value=$("#beginoffset").val();
+			x.currentTime=value/1000
+		}
+
+		if(e.keyCode==77){
+			var x = document.getElementById("play");
+			$("#endsongafterbeat").val(x.currentTime*1000)
+		}
+
+		if(e.keyCode==78)  {
+			var x = document.getElementById("play");
+			value=$("#endsongafterbeat").val();
+			x.currentTime=value/1000
+		}
+
+		if(e.keyCode==13){
+			if(start===undefined){
+				start=new Date();
+				startmin=start.getMinutes()*60000;
+				startsec=start.getSeconds()*1000;
+				startmil=start.getMilliseconds();
+				start=startmin+startsec+startmil;
+
+			}
+			nowdate=new Date();
+			nowdatemin=nowdate.getMinutes()*60000;
+			nowdatesec=nowdate.getSeconds()*1000;
+			nowdatemil=nowdate.getMilliseconds();
+			nowdate=nowdatemin+nowdatesec+nowdatemil;
+			timeminus=nowdate-start;
+			arrayoftime.push(e.timeStamp);
+			var bpm=(((arrayoftime.length)/(timeminus/1000))*60)
+			console.log(bpm);
+			console.log(timeminus);
+			if(timeminus>1000){
+				$("#bpm").val(Math.floor(bpm));
+			}
+
+
+
+		}
+		
+	})
+</script>
+    
+</head>
+<body ng-controller="uploadController"> 
+	<script>
+  </script>
+
+ <!--  <h1 id="play" ng-click="playSong()">Click here to play song</h1>  --> 
+
+<audio id="play" controls src={{songs.url}}>
+Your browser does not support the audio element.
+</audio><br><br>
+	Current Time: <input type="text" id="CurrentMin">
+	<h3>Add this songs info!	</h3>
+	Press left arrow to go back half a second <br>
+	Press right arrow to go forward half a second
+	<br>
+	Press '>' to Play/pause
+	<br><br>
+
+  <form action="/api/uploadedsong" method="post">
+  	(dont change this)<br>
+  	URL: <input type="text" name="url" value={{songs.url}}><br><br>
+  	(Press enter on each beat for 30+ seconds to calculate the BPM)<br>
+  	BPM: <input type="text" name="bpm" id="bpm" >
+	<br><br>
+	Use this to set beats before the down beat to play.<br><br>
+
+	<br>
+	Song Name: <input type="text" name="songname" id="songname" ><br><br>
+
+	<br>
+	Artist: <input type="text" name="artist" id="artist" ><br><br>
+
+	<br>
+	Language: <input type="text" name="language" id="language" ><br><br>
+
+	<br>
+	Genre: <input type="text" name="genre" id="genre" ><br><br>
+
+	<br>
+	Mood: <input type="text" name="mood" id="mood" ><br><br>
+
+	<br>
+	Loop: <input type="text" name="loop" id="loop" ><br><br>
+
+	Press 'B' to set the time at current time<br>
+	Press 'V' to go back to the time set here<br><br>
+	Begin Offset: <input type="text" name="beginoffset" id="beginoffset" ><br><br>
+
+  	This should be the time in milliseconds before the first verse (on downbeat)<br>
+  	<br>
+  	Press 'S' to set the time at current time<br>
+  	Press 'A' to go back to the time set here<br>
+  	<br>
+  	Starting Position: <input type="text" name="startsong1" id="startsong1" ><br><br>
+
+  	This should be the time in milliseconds after the first verse (right before downbeat)<br>
+  	<br>
+  	Press 'M' to set the time at current time<br>
+  	Press 'N' to go back to the time set here<br>
+  	<br>
+  	After Verse Position: <input type="text" name="endsongshort" id="endsongshort" ><br><br>
+
+  	This should be the time in milliseconds after the instrumentals (right before downbeat)<br>
+  	<br>
+  	Press 'P' to set the time at current time<br>
+  	Press 'O' to go back to the time set here<br>
+  	<br>
+  	After Instrumental Position: <input type="text" name="endsongafterbeat" id="endsongafterbeat" ><br><br>
+  	<button type="submit">Upload Song Data!</button>
+  </form>
+
+
+
+
+</body>
+</html>
