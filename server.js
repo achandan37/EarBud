@@ -8,8 +8,18 @@ var express 			= require('express'),
 	bodyParser 			= require('body-parser'),
 	done				= false
 
+var uristring =
+process.env.MONGOLAB_URI ||
+process.env.MONGOHQ_URL ||
+'mongodb://localhost:27017/songs';
 
-mongoose.connect('mongodb://localhost:27017/songs');
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+  } else {
+  console.log ('Succeeded connected to: ' + uristring);
+  }
+});
 
 
 app.use(session({secret:'ssshhhhh'}));
