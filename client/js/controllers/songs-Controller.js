@@ -28,7 +28,7 @@ function($scope, $resource){
 		var effectheat= new Audio(['assets/effects/heat2.mp3']);
 		effectheat.volume=0.7;
 		var timeouts= [];
-		var playingSong=0;
+		var playingSong=-1;
 		var playtype;
 		var pausetime;
 		var routesong;
@@ -54,6 +54,7 @@ function($scope, $resource){
 			console.log(startit);
 			console.log(playingSong);
 			StartSong(playingSong, startit);
+			playingSong-=1
 		}
 
 		$scope.clicksong=function(id){
@@ -104,7 +105,7 @@ function($scope, $resource){
 			clearInterval(interval1);
 			stopplaying(mainsong.length);
 			stoploops(loopsong.length);
-			playingSong=playingsong+1;
+			playingSong=playingSong+1;
 			StartSong(playingSong+1,0);});
 
 		$(document).on('click',"#previous",function()
@@ -151,13 +152,14 @@ function($scope, $resource){
 			pausetime=0;
 		});
 		$("#volumebar").val(volume*100);
-		StartSong(0,0);
+		$(document).ready(function(){StartSong(0,0);})
 
 function StartSong(i,time){
 		{
 		changeseek();
 		playtype="start";
 		currentSong=i;
+		playingSong+=1
 		var songindex=mainsong.length;
 		mainsong.push(new Audio($scope.songs[i]['url']));
 		mainsong[songindex].currentTime=time;
@@ -230,14 +232,10 @@ function playLoop(audiovar,time,endtime,i,output,type){
 		num=num*1000;
 		num=Math.floor(num);
 		
-		if(num>(time-1000) && num<time && ran===1){
+		if(num>(time-2000) && num<time && ran===1){
 			console.log(num, time-1000);
 			ran="yes";
 			setTimeout(function(){
-			loopsong[loopindex].pause();
-			loopsong[loopindex].currentTime=0;
-			loopsong[loopindex].playbackRate=rate;
-
 			loopsong[loopindex].volume=volume*0.6;
 			loopsong[loopindex].play();
 			console.log(num-time);
@@ -245,7 +243,6 @@ function playLoop(audiovar,time,endtime,i,output,type){
 			}, Math.abs(num-time+100) )}
 		else if(num>time && ran===1){
 			ran="yes";
-			loopsong[loopindex].pause();
 			loopsong[loopindex].currentTime=(num-time)/1000;
 			loopsong[loopindex].playbackRate=rate;
 			loopsong[loopindex].volume=volume*0.6;
@@ -293,7 +290,7 @@ function stopCurrent(audiovar,endtime,currentSong,output){
 			offsetplay.play();
 		}
 
-		if(num>endtime-130 && ran4===1){
+		if(num>endtime-100 && ran4===1){
 			StartSong(currentSong,(	output[currentSong]['startsong1'])/1000);
 			ran4="yes"
 			}

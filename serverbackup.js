@@ -9,22 +9,9 @@ var	session				= require('express-session');
 	done				= false
 
 
-
-var uristring =
-process.env.MONGOLAB_URI ||
-process.env.MONGOHQ_URL ||
-'mongodb://localhost/songs';
-
-mongoose.connect(uristring, function (err, res) {
-  if (err) {
-  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-  } else {
-  console.log ('Succeeded connected to: ' + uristring);
-  }
-});
+mongoose.connect('mongodb://localhost:27017/songs');
 
 
-app.set('port', (process.env.PORT || 5000));
 app.use(session({secret:'ssshhhhh'}));
 var sess;
 
@@ -82,6 +69,6 @@ app.use('/assets', express.static(__dirname + '/assets'));
 
 app.get('/api/songs', songsController.list);
 
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'));
-});
+app.listen(8000, function(){
+	console.log("listening to port");
+})
