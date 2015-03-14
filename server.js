@@ -15,13 +15,19 @@ process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
 'mongodb://localhost/songs';
 
-mongoose.connect(uristring, function (err, res) {
-  if (err) {
-  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-  } else {
-  console.log ('Succeeded connected to: ' + uristring);
-  }
-});
+var connect = function () {
+  var options = { server: { socketOptions: { keepAlive: 1 } } }
+  mongoose.connect(uristring, options)
+}
+connect();
+// Error handler
+mongoose.connection.on('error', function (err) {
+  console.log(err)
+})
+// Reconnect when closed
+mongoose.connection.on('disconnected', function () {
+  connect();
+})
 
 
 app.set('port', (process.env.PORT || 5000));
