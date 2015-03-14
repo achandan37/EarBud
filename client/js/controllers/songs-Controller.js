@@ -290,7 +290,7 @@ function stopCurrent(audiovar,endtime,currentSong,output){
 			offsetplay.play();
 		}
 
-		if(num>endtime-100 && ran4===1){
+		if(num>endtime-600 && ran4===1){
 			StartSong(currentSong,(	output[currentSong]['startsong1'])/1000);
 			ran4="yes"
 			}
